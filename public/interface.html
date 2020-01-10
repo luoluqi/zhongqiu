@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+<body>
+    <button onclick="testLogin()">测试登录接口</button>
+
+    <button onclick="testUpdate()">测试更新分数</button>
+
+    <div>
+        <input id="round" type="text">
+        <button onclick="testRound()">测试回合</button>
+    </div>
+
+    <div>
+        <button onclick="testRank()">测试排行榜</button>
+    </div>
+    <div>
+        <button onclick="testGift()">测试兑换礼物</button>
+    </div>
+
+    <script src="js/jquery.3.4.1.js"></script>
+    <script>
+         function getNonceStr(){
+            var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+            var nonceStr = '';
+            for (i = 0; i < 16; i++) {
+                nonceStr += $chars.charAt(Math.floor(Math.random() * $chars.length));
+            }
+
+            return nonceStr;
+        }  
+        
+        function login(openid){
+            $.post(
+                "/zq/user/login",
+                {
+                    openid:openid ? openid : getNonceStr(),
+                    nickname:getNonceStr(),
+                    headimgurl:getNonceStr(),
+                },
+                function(d){
+                    console.log(d);
+                },"json"
+            );
+        }
+
+        var maxNum = 5;
+        function testLogin(){
+            // for(var i = 0;i<maxNum;i++){
+            //     login();
+            // }
+
+            login("b2HEYKT7PRpKhxCp");
+            login("BK2r2CPdwTEkXiXe")
+            login("H3YxnjB7zTPQKJBr")
+            login("stEWsiXmGeasjrWx")
+            login("zFGbzm8WHSCDntN5")
+        }
+
+        function testUpdate(){
+            $.post(
+                "/zq/user/update",
+                {
+                    openid:"b2HEYKT7PRpKhxCp",
+                    num:1,
+                    score:10
+                },
+                function(){
+
+                },"json"
+            );
+        }
+        function testRound(){
+            var r = $("#round").val();
+            $.post(
+                "/zq/setRound",
+                {round:r},
+                function(){
+
+                },"json"
+            );
+        }
+        function testRank(){
+            $.post(
+                "/zq/user/find",
+                {},
+                function(d){
+
+                },"json"
+            );
+        }
+
+        function testGift(){
+            $.post(
+                "/zq/gift/add",
+                {
+                    openid:"b2HEYKT7PRpKhxCp",
+                    name:"sfsf",
+                    gift:"发是的冯绍峰是的冯绍峰说法萨芬",
+                    phone:"11231231",
+                    address:"发放水电费胜多负少防守打法水电费",
+                    score:1
+                },
+                function(){
+
+                },"json"
+            );
+        }
+    </script>
+</body>
+</html>
